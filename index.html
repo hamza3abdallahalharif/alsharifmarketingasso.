@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Perfume Price Comparator — Egypt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #B8953F;
+    --gold-light: #D4AF5C;
+    --gold-dim: #8A6E2E;
+    --ink: #1A1612;
+    --ink-2: #3D3529;
+    --ink-3: #6B5F4E;
+    --cream: #F8F4EE;
+    --cream-2: #EDE7DC;
+    --cream-3: #E0D8CC;
+    --white: #FFFFFF;
+    --success: #2D6A4F;
+    --danger: #8B2E2E;
+    --border: rgba(184,149,63,0.2);
+    --border-strong: rgba(184,149,63,0.45);
+    --shadow: 0 2px 24px rgba(26,22,18,0.08);
+    --shadow-lg: 0 8px 48px rgba(26,22,18,0.14);
+    --r-md: 10px;
+    --r-lg: 16px;
+    --r-xl: 22px;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(184,149,63,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(184,149,63,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(184,149,63,0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Decorative corner ornaments */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    z-index: 10;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .header-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .ornament-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .ornament-line.right {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .ornament-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .header-kicker {
+    font-size: 10.5px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+  }
+
+  .header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 6vw, 54px);
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .header-title em {
+    font-style: italic;
+    color: var(--gold-dim);
+  }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--ink-3);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .store-logos-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .store-pill {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-2);
+    background: var(--white);
+  }
+
+  .store-pill.sw { border-color: rgba(24,95,165,0.35); background: #EEF5FD; color: #185FA5; }
+  .store-pill.mz { border-color: rgba(15,110,86,0.35); background: #EEF8F4; color: #0F6E56; }
+  .store-pill.fc { border-color: rgba(153,60,29,0.35); background: #FDF2EE; color: #993C1D; }
+
+  /* ── Search ── */
+  .search-container {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--r-xl);
+    box-shadow: var(--shadow);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+  }
+
+  .search-box:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(184,149,63,0.12), var(--shadow);
+  }
+
+  .search-icon-wrap {
+    padding: 0 16px 0 20px;
+    color: var(--gold);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 16px 0;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: transparent;
+    letter-spacing: 0.01em;
+  }
+
+  .search-input::placeholder { color: var(--ink-3); font-weight: 300; }
+
+  .search-clear {
+    padding: 0 20px;
+    cursor: pointer;
+    color: var(--ink-3);
+    font-size: 18px;
+    display: none;
+    background: none;
+    border: none;
+    line-height: 1;
+  }
+
+  .search-clear:hover { color: var(--ink); }
+
+  /* Dropdown */
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0; right: 0;
+    background: var(--white);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-lg);
+    max-height: 320px;
+    overflow-y: auto;
+    z-index: 200;
+  }
+
+  .dropdown::-webkit-scrollbar { width: 4px; }
+  .dropdown::-webkit-scrollbar-track { background: transparent; }
+  .dropdown::-webkit-scrollbar-thumb { background: var(--cream-3); border-radius: 4px; }
+
+  .drop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(184,149,63,0.08);
+    transition: background 0.1s;
+  }
+
+  .drop-item:last-child { border-bottom: none; }
+  .drop-item:hover { background: var(--cream); }
+  .drop-item:first-child { border-radius: var(--r-lg) var(--r-lg) 0 0; }
+  .drop-item:last-child { border-radius: 0 0 var(--r-lg) var(--r-lg); }
+
+  .drop-text-col {}
+  .drop-name { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .drop-brand { font-size: 12px; color: var(--ink-3); margin-top: 1px; font-weight: 300; }
+  .drop-badge { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; background: rgba(184,149,63,0.12); color: var(--gold-dim); padding: 3px 9px; border-radius: 20px; font-weight: 500; }
+
+  .no-results-dd { padding: 20px; text-align: center; color: var(--ink-3); font-size: 14px; font-weight: 300; }
+
+  /* ── Result Area ── */
+  .result-area { display: none; animation: fadeUp 0.3s ease; }
+  .result-area.show { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .result-title-col {}
+
+  .result-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+
+  .result-perfume-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .result-brand-name {
+    font-size: 14px;
+    color: var(--ink-3);
+    font-weight: 300;
+    margin-top: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .result-count-badge {
+    font-size: 12px;
+    color: var(--ink-3);
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Store Cards */
+  .stores-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) { .stores-grid { grid-template-columns: 1fr; } }
+
+  .store-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .store-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .store-card.available:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow);
+  }
+
+  .store-card.available:hover::before { opacity: 1; }
+
+  .store-card.best-price {
+    border-color: rgba(45,106,79,0.4);
+    background: linear-gradient(145deg, #FAFFF8, #FFFFFF);
+  }
+
+  .store-card.best-price::before { opacity: 1; background: linear-gradient(90deg, transparent, #2D6A4F, transparent); }
+
+  .best-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(45,106,79,0.12);
+    color: var(--success);
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+    border: 1px solid rgba(45,106,79,0.25);
+  }
+
+  .store-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .store-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+
+  .badge-sw { background: #E6F1FB; color: #185FA5; }
+  .badge-mz { background: #E1F5EE; color: #0F6E56; }
+  .badge-fc { background: #FAECE7; color: #993C1D; }
+
+  .store-info {}
+  .store-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+  .store-url { font-size: 11px; color: var(--ink-3); font-weight: 300; margin-top: 1px; }
+
+  .price-section { margin-top: auto; }
+  .price-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 5px; }
+
+  .price-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .price-currency {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-3);
+    font-family: 'DM Sans', sans-serif;
+    margin-left: 3px;
+  }
+
+  .not-included-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cream-2);
+    border: 1px dashed var(--cream-3);
+    color: var(--ink-3);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: var(--r-md);
+    font-weight: 400;
+  }
+
+  .not-included-pill::before {
+    content: '✕';
+    font-size: 9px;
+    opacity: 0.6;
+  }
+
+  /* ── Stats ── */
+  .stats-section { margin-top: 8px; }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 1.5rem 0 1.25rem;
+  }
+
+  .divider-line-gold {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-strong), transparent);
+  }
+
+  .divider-line-gold.right { background: linear-gradient(90deg, transparent, var(--border-strong)); }
+
+  .divider-text {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .avg-card {
+    background: var(--ink);
+    border-radius: var(--r-lg);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .avg-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at top right, rgba(184,149,63,0.15), transparent 60%);
+    pointer-events: none;
+  }
+
+  .avg-left {}
+  .avg-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 4px; }
+  .avg-desc { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 300; }
+  .avg-price-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 500;
+    color: var(--gold-light);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .avg-currency { font-size: 18px; font-weight: 400; color: rgba(212,175,92,0.7); font-family: 'DM Sans', sans-serif; margin-left: 4px; }
+
+  .chips-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 500px) { .chips-row { grid-template-columns: 1fr 1fr; } }
+
+  .chip {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    text-align: center;
+  }
+
+  .chip-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+
+  .chip-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .chip-val.green { color: var(--success); }
+  .chip-val.red { color: var(--danger); }
+  .chip-store { font-size: 11px; color: var(--ink-3); font-weight: 300; margin-top: 2px; }
+
+  /* ── Empty State ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+    display: block;
+  }
+
+  .empty-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+  }
+
+  .empty-sub {
+    font-size: 14px;
+    color: var(--ink-3);
+    font-weight: 300;
+    max-width: 320px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .suggested-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
+
+  .suggest-btn {
+    background: var(--white);
+    border: 1px solid var(--border-strong);
+    color: var(--ink-2);
+    font-size: 13px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  .suggest-btn:hover { background: var(--cream-2); border-color: var(--gold); }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .footer-line { width: 40px; height: 1px; background: var(--border-strong); }
+  .footer-diamond { width: 5px; height: 5px; background: var(--gold); transform: rotate(45deg); }
+  .footer-text { font-size: 12px; color: var(--ink-3); font-weight: 300; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-diamond"></div>
+      <div class="ornament-line right"></div>
+    </div>
+    <p class="header-kicker">Egypt · مقارنة الأسعار</p>
+    <h1 class="header-title">Perfume Price<br><em>Comparator</em></h1>
+    <p class="header-sub">Compare prices across leading Egyptian fragrance retailers</p>
+    <div class="store-logos-row">
+      <span class="store-pill sw">Samir William</span>
+      <span class="store-pill mz">Mazaya</span>
+      <span class="store-pill fc">Faces</span>
+    </div>
+  </header>
+
+  <!-- Search -->
+  <div class="search-container">
+    <div class="search-box">
+      <div class="search-icon-wrap">&#9901;</div>
+      <input class="search-input" id="searchInput" type="text"
+        placeholder="Search a perfume — Sauvage, Aventus, Black Opium…" autocomplete="off" />
+      <button class="search-clear" id="clearBtn" title="Clear">&#215;</button>
+    </div>
+    <div class="dropdown" id="dropdown"></div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-area" id="resultArea">
+    <div class="result-header">
+      <div class="result-title-col">
+        <p class="result-label">Showing results for</p>
+        <h2 class="result-perfume-name" id="resName"></h2>
+        <p class="result-brand-name" id="resBrand"></p>
+      </div>
+      <div class="result-count-badge" id="resCount"></div>
+    </div>
+
+    <div class="stores-grid" id="storesGrid"></div>
+
+    <div class="stats-section" id="statsSection"></div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" id="emptyState">
+    <span class="empty-icon">&#9753;</span>
+    <h3 class="empty-title">Find Your Fragrance</h3>
+    <p class="empty-sub">Type a perfume name above to instantly compare prices across all three stores.</p>
+    <div class="suggested-row" id="suggestRow">
+      <button class="suggest-btn" onclick="quickSearch('Bleu de Chanel')">Bleu de Chanel</button>
+      <button class="suggest-btn" onclick="quickSearch('Dior Sauvage')">Dior Sauvage</button>
+      <button class="suggest-btn" onclick="quickSearch('Creed Aventus')">Creed Aventus</button>
+      <button class="suggest-btn" onclick="quickSearch('YSL Black Opium')">Black Opium</button>
+      <button class="suggest-btn" onclick="quickSearch('Tom Ford Oud Wood')">Oud Wood</button>
+      <button class="suggest-btn" onclick="quickSearch('Baccarat Rouge 540')">Baccarat Rouge</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-ornament">
+      <div class="footer-line"></div>
+      <div class="footer-diamond"></div>
+      <div class="footer-line"></div>
+    </div>
+    <p class="footer-text">Prices in Egyptian Pound (EGP) · Updated estimates · Verify with each retailer before purchase</p>
+  </footer>
+
+</div>
+
+<script>
+// Prices in EGP (SAR × ~8.5, rounded to nearest 50)
+const DB = [
+  {n:"Bleu de Chanel",b:"Chanel",sw:4100,mz:4000,fc:4200},
+  {n:"Dior Sauvage",b:"Dior",sw:3850,mz:3750,fc:3950},
+  {n:"Tom Ford Oud Wood",b:"Tom Ford",sw:7250,mz:null,fc:7600},
+  {n:"Creed Aventus",b:"Creed",sw:10200,mz:null,fc:10050},
+  {n:"Amouage Interlude Man",b:"Amouage",sw:6400,mz:6200,fc:null},
+  {n:"YSL Black Opium",b:"Yves Saint Laurent",sw:3350,mz:3250,fc:3500},
+  {n:"La Vie Est Belle",b:"Lancôme",sw:3200,mz:3050,fc:3300},
+  {n:"Acqua di Gio",b:"Giorgio Armani",sw:2950,mz:2900,fc:3050},
+  {n:"Versace Eros",b:"Versace",sw:2500,mz:2400,fc:2650},
+  {n:"1 Million",b:"Paco Rabanne",sw:2700,mz:2650,fc:2800},
+  {n:"Flowerbomb",b:"Viktor & Rolf",sw:3550,mz:null,fc:3600},
+  {n:"Gucci Bloom",b:"Gucci",sw:3250,mz:3100,fc:3350},
+  {n:"Good Girl",b:"Carolina Herrera",sw:3050,mz:2950,fc:3200},
+  {n:"Daisy",b:"Marc Jacobs",sw:2650,mz:2500,fc:2750},
+  {n:"Libre",b:"Yves Saint Laurent",sw:3650,mz:3550,fc:3800},
+  {n:"Miss Dior",b:"Dior",sw:3600,mz:3450,fc:3700},
+  {n:"J'adore",b:"Dior",sw:3750,mz:3600,fc:3850},
+  {n:"Chance Eau Tendre",b:"Chanel",sw:3950,mz:3850,fc:4100},
+  {n:"Coco Mademoiselle",b:"Chanel",sw:3990,mz:null,fc:4150},
+  {n:"Light Blue",b:"Dolce & Gabbana",sw:2400,mz:2300,fc:2500},
+  {n:"Narciso Rodriguez For Her",b:"Narciso Rodriguez",sw:2900,mz:2750,fc:3000},
+  {n:"Invictus",b:"Paco Rabanne",sw:2500,mz:2400,fc:2650},
+  {n:"Stronger With You",b:"Giorgio Armani",sw:3250,mz:3100,fc:null},
+  {n:"The One",b:"Dolce & Gabbana",sw:3150,mz:3000,fc:3300},
+  {n:"Baccarat Rouge 540",b:"Maison Margiela",sw:12750,mz:null,fc:13200},
+  {n:"Oud pour Femme",b:"Tom Ford",sw:7650,mz:null,fc:7990},
+  {n:"Ombre Leather",b:"Tom Ford",sw:6950,mz:null,fc:7300},
+  {n:"Black Orchid",b:"Tom Ford",sw:6650,mz:null,fc:6950},
+  {n:"Tobacco Vanille",b:"Tom Ford",sw:7400,mz:null,fc:null},
+  {n:"Rose Gold",b:"Amouage",sw:6950,mz:6800,fc:null},
+  {n:"Reflection Man",b:"Amouage",sw:6300,mz:6100,fc:null},
+  {n:"Angel",b:"Thierry Mugler",sw:2950,mz:2850,fc:3100},
+  {n:"Alien",b:"Thierry Mugler",sw:3050,mz:null,fc:3200},
+  {n:"Si",b:"Giorgio Armani",sw:3350,mz:3250,fc:3500},
+  {n:"My Way",b:"Giorgio Armani",sw:3300,mz:3150,fc:3400},
+  {n:"Olympea",b:"Paco Rabanne",sw:2650,mz:2500,fc:2750},
+  {n:"La Nuit de l'Homme",b:"Yves Saint Laurent",sw:2800,mz:2700,fc:2950},
+  {n:"L'Homme YSL",b:"Yves Saint Laurent",sw:2900,mz:null,fc:3000},
+  {n:"Euphoria",b:"Calvin Klein",sw:2200,mz:2100,fc:2350},
+  {n:"Eternity",b:"Calvin Klein",sw:2050,mz:1900,fc:2150},
+  {n:"CK One",b:"Calvin Klein",sw:1650,mz:1550,fc:1800},
+  {n:"Obsession",b:"Calvin Klein",sw:2100,mz:null,fc:2200},
+  {n:"Polo Blue",b:"Ralph Lauren",sw:2400,mz:2300,fc:2550},
+  {n:"Polo Red",b:"Ralph Lauren",sw:2400,mz:2250,fc:2500},
+  {n:"Romance",b:"Ralph Lauren",sw:2250,mz:2150,fc:2400},
+  {n:"Opium",b:"Yves Saint Laurent",sw:2950,mz:2800,fc:3050},
+  {n:"Gucci Guilty",b:"Gucci",sw:3050,mz:2950,fc:3200},
+  {n:"Gucci Flora",b:"Gucci",sw:2900,mz:null,fc:3000},
+  {n:"Versace Pour Homme",b:"Versace",sw:2150,mz:2050,fc:2300},
+  {n:"Dylan Blue",b:"Versace",sw:2350,mz:2200,fc:2450},
+  {n:"Bright Crystal",b:"Versace",sw:2250,mz:2150,fc:2400},
+  {n:"L'Interdit",b:"Givenchy",sw:3050,mz:2950,fc:3200},
+  {n:"Irresistible",b:"Givenchy",sw:2950,mz:null,fc:3100},
+  {n:"Givenchy Gentleman",b:"Givenchy",sw:2900,mz:null,fc:3000},
+  {n:"Boss Bottled",b:"Hugo Boss",sw:2350,mz:2200,fc:2450},
+  {n:"Boss The Scent",b:"Hugo Boss",sw:2400,mz:2300,fc:2550},
+  {n:"Fahrenheit",b:"Dior",sw:3200,mz:3050,fc:3300},
+  {n:"Sauvage Elixir",b:"Dior",sw:4950,mz:null,fc:5100},
+  {n:"Miss Dior Blooming Bouquet",b:"Dior",sw:3350,mz:3250,fc:3500},
+  {n:"Hypnotic Poison",b:"Dior",sw:3300,mz:null,fc:3400},
+  {n:"N°5",b:"Chanel",sw:4100,mz:null,fc:4250},
+  {n:"Chanel Allure",b:"Chanel",sw:3900,mz:null,fc:4100},
+  {n:"Allure Homme Sport",b:"Chanel",sw:3850,mz:null,fc:4050},
+  {n:"Egoïste",b:"Chanel",sw:4200,mz:null,fc:null},
+  {n:"Ultra Male",b:"Jean Paul Gaultier",sw:2600,mz:2450,fc:2700},
+  {n:"Scandal",b:"Jean Paul Gaultier",sw:2700,mz:2550,fc:2800},
+  {n:"Classique",b:"Jean Paul Gaultier",sw:2500,mz:2400,fc:2650},
+  {n:"Creed Aventus for Her",b:"Creed",sw:9350,mz:null,fc:9700},
+  {n:"Green Irish Tweed",b:"Creed",sw:9750,mz:null,fc:10100},
+  {n:"Millésime Impérial",b:"Creed",sw:10050,mz:null,fc:10350},
+  {n:"Silver Mountain Water",b:"Creed",sw:9350,mz:null,fc:9700},
+  {n:"Santal 33",b:"Le Labo",sw:7550,mz:null,fc:7800},
+  {n:"Rose 31",b:"Le Labo",sw:7400,mz:null,fc:7650},
+  {n:"Another 13",b:"Le Labo",sw:7300,mz:null,fc:7550},
+  {n:"Noir Extreme",b:"Tom Ford",sw:6900,mz:null,fc:7250},
+  {n:"Soleil Blanc",b:"Tom Ford",sw:7050,mz:null,fc:7400},
+  {n:"Neroli Portofino",b:"Tom Ford",sw:7150,mz:null,fc:7500},
+  {n:"Shalimar",b:"Guerlain",sw:3600,mz:null,fc:3750},
+  {n:"Mon Guerlain",b:"Guerlain",sw:3250,mz:3100,fc:3350},
+  {n:"La Petite Robe Noire",b:"Guerlain",sw:3150,mz:null,fc:3300},
+  {n:"Valentino Uomo",b:"Valentino",sw:3050,mz:null,fc:3200},
+  {n:"Voce Viva",b:"Valentino",sw:3300,mz:null,fc:3400},
+  {n:"Donna Born in Roma",b:"Valentino",sw:3350,mz:null,fc:3500},
+  {n:"Luna Rossa Ocean",b:"Prada",sw:3000,mz:null,fc:3150},
+  {n:"La Femme Prada",b:"Prada",sw:3200,mz:null,fc:3300},
+  {n:"Prada L'Homme",b:"Prada",sw:3100,mz:null,fc:3250},
+  {n:"Burberry Her",b:"Burberry",sw:2450,mz:2350,fc:2600},
+  {n:"Burberry Hero",b:"Burberry",sw:2500,mz:2400,fc:2650},
+  {n:"Weekend for Men",b:"Burberry",sw:2400,mz:null,fc:2500},
+  {n:"Terre d'Hermès",b:"Hermès",sw:4450,mz:null,fc:4650},
+  {n:"Twilly d'Hermès",b:"Hermès",sw:4250,mz:null,fc:4450},
+  {n:"Acqua di Gio Profumo",b:"Giorgio Armani",sw:3600,mz:3450,fc:3700},
+  {n:"Si Passione",b:"Giorgio Armani",sw:3400,mz:3300,fc:3550},
+  {n:"Code Absolu",b:"Giorgio Armani",sw:3350,mz:null,fc:3500},
+  {n:"Oud Ispahan",b:"Dior",sw:8100,mz:null,fc:8400},
+  {n:"Spirit of Dubai Malaki",b:"Spirit of Dubai",sw:null,mz:6100,fc:null},
+  {n:"Spirit of Dubai Original",b:"Spirit of Dubai",sw:null,mz:5800,fc:null},
+  {n:"Escentric 01",b:"Escentric Molecules",sw:2700,mz:null,fc:2900},
+  {n:"Molecule 01",b:"Escentric Molecules",sw:2650,mz:null,fc:2850},
+  {n:"Portrait of a Lady",b:"Frederic Malle",sw:null,mz:null,fc:10650},
+  {n:"Musc Ravageur",b:"Frederic Malle",sw:null,mz:null,fc:9350},
+  {n:"Encens Mythique d'Orient",b:"Guerlain",sw:null,mz:null,fc:7250},
+  {n:"Olympéa Intense",b:"Paco Rabanne",sw:2800,mz:2700,fc:2950},
+  {n:"Lady Million",b:"Paco Rabanne",sw:2700,mz:2550,fc:2800},
+  {n:"Crystal Noir",b:"Versace",sw:2300,mz:2150,fc:2400},
+  {n:"Atelier des Ors Nuit Romaine",b:"Atelier des Ors",sw:6650,mz:null,fc:null},
+  {n:"Parfums de Marly Layton",b:"Parfums de Marly",sw:5300,mz:null,fc:5550},
+  {n:"Parfums de Marly Pegasus",b:"Parfums de Marly",sw:5200,mz:null,fc:5450},
+  {n:"Parfums de Marly Herod",b:"Parfums de Marly",sw:5100,mz:null,fc:5350},
+  {n:"Parfums de Marly Delina",b:"Parfums de Marly",sw:5350,mz:null,fc:5600},
+  {n:"Initio Side Effect",b:"Initio",sw:5800,mz:null,fc:6050},
+  {n:"Initio Oud for Greatness",b:"Initio",sw:6100,mz:null,fc:6400},
+  {n:"Xerjoff Naxos",b:"Xerjoff",sw:7250,mz:null,fc:7600},
+  {n:"Xerjoff Erba Pura",b:"Xerjoff",sw:7050,mz:null,fc:7400},
+  {n:"Memo Paris Irish Leather",b:"Memo Paris",sw:null,mz:null,fc:8100},
+  {n:"Ex Nihilo Fleur Narcotique",b:"Ex Nihilo",sw:null,mz:null,fc:7500},
+];
+
+const STORES = [
+  {key:'sw', name:'Samir William', url:'samirwilliam.com', badge:'SW', cls:'badge-sw'},
+  {key:'mz', name:'Mazaya', url:'mazayaperfumes.com', badge:'MZ', cls:'badge-mz'},
+  {key:'fc', name:'Faces', url:'faces.com.sa', badge:'FC', cls:'badge-fc'},
+];
+
+function norm(s){
+  return s.toLowerCase()
+    .replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôö]/g,'o')
+    .replace(/[ùûü]/g,'u').replace(/ç/g,'c').replace(/['']/g,' ');
+}
+
+function score(item, q){
+  const nt=norm(item.n), nb=norm(item.b), nq=norm(q);
+  if(nt.startsWith(nq)||nb.startsWith(nq)) return 3;
+  if(nt.includes(nq)||nb.includes(nq)) return 2;
+  if(nq.split(' ').every(w=>nt.includes(w)||nb.includes(w))) return 1;
+  return 0;
+}
+
+function doSearch(q){
+  if(q.trim().length<2) return [];
+  return DB.map(d=>({...d,sc:score(d,q)}))
+    .filter(d=>d.sc>0)
+    .sort((a,b)=>b.sc-a.sc||a.n.localeCompare(b.n))
+    .slice(0,12);
+}
+
+const inp = document.getElementById('searchInput');
+const dd = document.getElementById('dropdown');
+const resultArea = document.getElementById('resultArea');
+const emptyState = document.getElementById('emptyState');
+const clearBtn = document.getElementById('clearBtn');
+
+function showDd(results){
+  if(!results.length){
+    dd.innerHTML='<div class="no-results-dd">No perfumes found — try a different spelling</div>';
+    dd.style.display='block'; return;
+  }
+  dd.innerHTML = results.map(r=>`
+    <div class="drop-item" data-name="${r.n}">
+      <div class="drop-text-col">
+        <div class="drop-name">${r.n}</div>
+        <div class="drop-brand">${r.b}</div>
+      </div>
+      <span class="drop-badge">${r.sc===3?'Exact':'Match'}</span>
+    </div>`).join('');
+  dd.style.display='block';
+  dd.querySelectorAll('.drop-item').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const nm = el.dataset.name;
+      inp.value = nm;
+      clearBtn.style.display='block';
+      dd.style.display='none';
+      renderResult(nm);
+    });
+  });
+}
+
+function renderResult(name){
+  const item = DB.find(d=>d.n===name);
+  if(!item) return;
+  emptyState.style.display='none';
+  resultArea.classList.add('show');
+
+  document.getElementById('resName').textContent = item.n;
+  document.getElementById('resBrand').textContent = item.b;
+
+  const prices = STORES.map(s=>item[s.key]).filter(Boolean);
+  const minP = prices.length ? Math.min(...prices) : null;
+
+  document.getElementById('resCount').textContent =
+    prices.length ? `Available in ${prices.length} of 3 stores` : 'Not found in any store';
+
+  const grid = document.getElementById('storesGrid');
+  grid.innerHTML = STORES.map(s=>{
+    const price = item[s.key];
+    const isBest = price && price===minP && prices.length>1;
+    return `
+      <div class="store-card ${price?'available':''} ${isBest?'best-price':''}">
+        ${isBest?'<span class="best-badge">Best Price</span>':''}
+        <div class="store-logo-row">
+          <div class="store-badge ${s.cls}">${s.badge}</div>
+          <div class="store-info">
+            <div class="store-name">${s.name}</div>
+            <div class="store-url">${s.url}</div>
+          </div>
+        </div>
+        <div class="price-section">
+          <div class="price-label">Price</div>
+          ${price
+            ? `<div class="price-value">${price.toLocaleString('en-EG')}<span class="price-currency">EGP</span></div>`
+            : `<div class="not-included-pill">Not Included</div>`
+          }
+        </div>
+      </div>`;
+  }).join('');
+
+  const stats = document.getElementById('statsSection');
+  if(!prices.length){ stats.innerHTML=''; return; }
+
+  const avg = prices.reduce((a,b)=>a+b,0)/prices.length;
+  const maxP = Math.max(...prices);
+  const spread = maxP-minP;
+  const cheapStore = STORES.find(s=>item[s.key]===minP);
+  const expStore = STORES.find(s=>item[s.key]===maxP);
+
+  stats.innerHTML=`
+    <div class="section-divider">
+      <div class="divider-line-gold"></div>
+      <span class="divider-text">Price Analysis</span>
+      <div class="divider-line-gold right"></div>
+    </div>
+    <div class="avg-card">
+      <div class="avg-left">
+        <div class="avg-label">Average Price</div>
+        <div class="avg-desc">Across ${prices.length} available store${prices.length>1?'s':''}</div>
+      </div>
+      <div>
+        <span class="avg-price-val">${Math.round(avg).toLocaleString('en-EG')}</span>
+        <span class="avg-currency">EGP</span>
+      </div>
+    </div>
+    <div class="chips-row">
+      <div class="chip">
+        <div class="chip-label">Lowest</div>
+        <div class="chip-val green">${minP.toLocaleString('en-EG')} EGP</div>
+        <div class="chip-store">${cheapStore.name}</div>
+      </div>
+      <div class="chip">
+        <div class="chip-label">Highest</div>
+        <div class="chip-val red">${maxP.toLocaleString('en-EG')} EGP</div>
+        <div class="chip-store">${expStore.name}</div>
+      </div>
+      <div class="chip">
+        <div class="chip-label">Spread</div>
+        <div class="chip-val">${spread.toLocaleString('en-EG')} EGP</div>
+        <div class="chip-store">${prices.length>1?'Difference':'Single source'}</div>
+      </div>
+    </div>`;
+}
+
+function quickSearch(name){
+  inp.value = name;
+  clearBtn.style.display='block';
+  dd.style.display='none';
+  renderResult(name);
+  inp.focus();
+}
+
+inp.addEventListener('input',()=>{
+  const q=inp.value.trim();
+  clearBtn.style.display = q.length?'block':'none';
+  if(q.length<2){ dd.style.display='none'; return; }
+  showDd(doSearch(q));
+});
+
+inp.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ dd.style.display='none'; inp.blur(); }
+  if(e.key==='Enter'){
+    const first = dd.querySelector('.drop-item');
+    if(first){ first.click(); }
+  }
+});
+
+clearBtn.addEventListener('click',()=>{
+  inp.value=''; clearBtn.style.display='none';
+  dd.style.display='none';
+  resultArea.classList.remove('show');
+  emptyState.style.display='block';
+  inp.focus();
+});
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-container')) dd.style.display='none';
+});
+</script>
+</body>
+</html>
